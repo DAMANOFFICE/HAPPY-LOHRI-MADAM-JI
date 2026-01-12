@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>🔥 Happy Lohri Lipsy ❤️ 🔥</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  height:100svh;
+  background:radial-gradient(circle at bottom, #ff9a3c, #8b0000 70%);
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:'Poppins', sans-serif;
+  color:#fff;
+}
+
+.container{
+  width:100%;
+  max-width:420px;
+  height:100%;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  text-align:center;
+}
+
+/* TEXT */
+h1{
+  font-family:'Pacifico', cursive;
+  font-size:clamp(2rem, 6vw, 2.6rem);
+  color:#ffd36a;
+  text-shadow:0 0 15px rgba(255,200,0,0.7);
+}
+
+.names{
+  font-size:clamp(1.1rem, 4vw, 1.3rem);
+  color:#fff3b0;
+}
+
+.subtitle{
+  font-size:0.9rem;
+  opacity:0.9;
+  margin:6px 0;
+}
+
+/* BONFIRE */
+.bonfire{
+  position:relative;
+  width:180px;
+  height:220px;
+  margin:0 auto;
+  flex-shrink:0;
+}
+
+.log{
+  position:absolute;
+  bottom:0;
+  width:150px;
+  height:22px;
+  background:#5b2c06;
+  border-radius:20px;
+}
+.log:nth-child(1){transform:rotate(20deg);}
+.log:nth-child(2){transform:rotate(-20deg);}
+
+.flame{
+  position:absolute;
+  bottom:18px;
+  left:50%;
+  width:110px;
+  height:160px;
+  background:radial-gradient(circle at bottom, #fff7c7, #ff9800, #ff4500);
+  border-radius:50%;
+  transform:translateX(-50%);
+  animation:flicker 1s infinite;
+}
+
+.flame:before,
+.flame:after{
+  content:"";
+  position:absolute;
+  background:radial-gradient(circle at bottom, #fffad6, #ffb300, #ff5722);
+  border-radius:50%;
+}
+
+.flame:before{
+  width:70px;
+  height:110px;
+  top:28px;
+  left:20px;
+}
+.flame:after{
+  width:50px;
+  height:90px;
+  top:52px;
+  left:30px;
+}
+
+@keyframes flicker{
+  0%{transform:translateX(-50%) scale(1);}
+  50%{transform:translateX(-50%) scale(1.08);}
+  100%{transform:translateX(-50%) scale(1);}
+}
+
+/* EMBERS */
+.ember{
+  position:absolute;
+  bottom:70px;
+  width:5px;
+  height:5px;
+  background:#ffd36a;
+  border-radius:50%;
+  animation:rise 3s infinite;
+}
+
+@keyframes rise{
+  from{transform:translateY(0);opacity:1;}
+  to{transform:translateY(-180px);opacity:0;}
+}
+
+/* CONTROLS */
+.controls{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+button{
+  padding:12px;
+  border:none;
+  border-radius:25px;
+  font-size:1rem;
+  background:linear-gradient(45deg,#ffd36a,#ff9800);
+  color:#7a1b00;
+  font-weight:500;
+  box-shadow:0 6px 15px rgba(0,0,0,0.3);
+  transition:0.3s;
+}
+
+button:active{
+  transform:scale(0.95);
+}
+
+/* MESSAGE */
+.message{
+  font-family:'Pacifico', cursive;
+  font-size:clamp(1.3rem, 5vw, 1.7rem);
+  color:#fff3b0;
+  opacity:0;
+  transition:opacity 1s;
+  text-shadow:0 0 12px rgba(255,215,100,0.7);
+  min-height:48px;
+}
+
+/* THROW */
+.throw-item{
+  position:absolute;
+  left:50%;
+  top:65%;
+  font-size:2rem;
+  animation:throw 1.2s forwards;
+}
+
+@keyframes throw{
+  from{transform:translate(-50%,0);}
+  to{transform:translate(-50%,-180px) scale(0);opacity:0;}
+}
+
+/* FIREWORKS */
+.firework{
+  position:absolute;
+  width:5px;
+  height:5px;
+  background:#ffd36a;
+  border-radius:50%;
+  animation:explode 1s forwards;
+}
+
+@keyframes explode{
+  from{transform:scale(1);opacity:1;}
+  to{transform:translate(var(--x),var(--y)) scale(0);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2023/12/20/audio_8e28b6db7f.mp3">
+</audio>
+
+<div class="container">
+
+  <div>
+    <h1>🔥 Happy Lohri 🔥</h1>
+    <div class="names">❤️ Lipsy ❤️</div>
+    <div class="subtitle">Burn worries, share sweetness & welcome love ✨</div>
+  </div>
+
+  <div class="bonfire" id="fire">
+    <div class="log"></div>
+    <div class="log"></div>
+    <div class="flame"></div>
+  </div>
+
+  <div class="controls">
+    <button onclick="throwWorry()">🌿 Toss Worries</button>
+    <button onclick="throwWish()">🍬 Toss a Wish</button>
+  </div>
+
+  <div class="message" id="message"></div>
+
+</div>
+
+<script>
+let musicStarted=false;
+const fire=document.getElementById("fire");
+
+const wishes=[
+  "Every Lohri feels warmer with you ❤️",
+  "You are my sweetest wish 🍬",
+  "May this fire light our future ✨",
+  "With you, winters feel magical 🔥",
+  "Here’s to us, always 💖"
+];
+
+function startMusic(){
+  if(!musicStarted){
+    document.getElementById("music").play();
+    musicStarted=true;
+  }
+}
+
+function ember(){
+  const e=document.createElement("div");
+  e.className="ember";
+  e.style.left=Math.random()*100+"%";
+  fire.appendChild(e);
+  setTimeout(()=>e.remove(),3000);
+}
+setInterval(ember,350);
+
+function throwItem(icon){
+  const t=document.createElement("div");
+  t.className="throw-item";
+  t.innerHTML=icon;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),1200);
+}
+
+function fireworks(){
+  for(let i=0;i<20;i++){
+    const f=document.createElement("div");
+    f.className="firework";
+    f.style.left=Math.random()*100+"%";
+    f.style.top=Math.random()*35+"%";
+    f.style.setProperty("--x",(Math.random()*160-80)+"px");
+    f.style.setProperty("--y",(Math.random()*160-80)+"px");
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),1000);
+  }
+}
+
+function throwWorry(){
+  startMusic();
+  throwItem("🌿");
+  document.getElementById("message").style.opacity=0;
+}
+
+function throwWish(){
+  startMusic();
+  throwItem("🍬");
+  const msg=document.getElementById("message");
+  msg.innerText=wishes[Math.floor(Math.random()*wishes.length)];
+  msg.style.opacity=1;
+  fireworks();
+}
+</script>
+
+</body>
+</html>
