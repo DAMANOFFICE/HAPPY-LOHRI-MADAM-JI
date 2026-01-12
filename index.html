@@ -82,16 +82,6 @@ h1{
   animation:flicker 1s infinite;
 }
 
-.flame:before,.flame:after{
-  content:"";
-  position:absolute;
-  border-radius:50%;
-  background:radial-gradient(circle at bottom,#fffad6,#ffb300,#ff5722);
-}
-
-.flame:before{width:70px;height:110px;top:28px;left:20px}
-.flame:after{width:50px;height:90px;top:52px;left:30px}
-
 @keyframes flicker{
   0%{transform:translateX(-50%) scale(1)}
   50%{transform:translateX(-50%) scale(1.08)}
@@ -110,7 +100,6 @@ h1{
 }
 
 @keyframes rise{
-  from{transform:translateY(0);opacity:1}
   to{transform:translateY(-180px);opacity:0}
 }
 
@@ -154,7 +143,6 @@ button:active{transform:scale(.95)}
 }
 
 @keyframes throw{
-  from{transform:translate(-50%,0)}
   to{transform:translate(-50%,-180px) scale(0);opacity:0}
 }
 
@@ -197,8 +185,8 @@ button:active{transform:scale(.95)}
   </div>
 </div>
 
-<!-- YOUTUBE PLAYER (HIDDEN) -->
-<div id="player" style="display:none"></div>
+<!-- INVISIBLE AUDIO PLAYER -->
+<div id="player"></div>
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
@@ -206,11 +194,26 @@ const fire=document.getElementById("fire");
 const msg=document.getElementById("message");
 
 const wishes=[
-  "Every Lohri feels warmer with you ❤️",
-  "You are my sweetest wish 🍬",
-  "May this fire light our future ✨",
-  "With you, winters feel magical 🔥",
-  "Here’s to us, always 💖"
+    "Every flame dances happier when you’re near ❤️",
+  "You are my favorite winter warmth 🔥",
+  "With you, even cold nights feel like poetry ✨",
+  "I tossed a wish… and it was always you 💖",
+  "This Lohri, I thank the fire for bringing you into my life 🌙",
+  "You are sweeter than rewri and warmer than this fire 🍬",
+  "If love had a glow, it would look like you ✨",
+  "Every spark reminds me how you light up my heart 🔥",
+  "Holding you would feel warmer than this bonfire ❤️",
+  "I don’t need wishes anymore, I already have you 💫",
+  "This fire burns worries, but my heart burns only for you 💕",
+  "Even winters feel shy when you smile ❄️❤️",
+  "You make every festival feel like home 🏡",
+  "If I could toss my heart into the fire, it would spell your name 🔥",
+  "Some loves feel safe… you feel like forever ♾️",
+  "This Lohri, I wish for us — today, tomorrow, always 💖",
+  "The fire crackles, but my heart whispers your name ✨",
+  "You are the reason this night feels magical 🌌",
+  "Cold hands, warm hearts, and you beside me ❤️",
+  "Every spark carries a promise of us 💫"
 ];
 
 /* EMBERS */
@@ -245,13 +248,22 @@ function fireworks(){
   }
 }
 
-/* YOUTUBE MUSIC */
+/* AUDIO-ONLY YOUTUBE */
 let player,vol=0,started=false;
 
 function onYouTubeIframeAPIReady(){
   player=new YT.Player('player',{
-    videoId:'N2-j6hVVbso',   // 🔴 PUT SHORTS VIDEO ID HERE
-    playerVars:{loop:1,playlist:'N2-j6hVVbso'},
+    width:1,
+    height:1,
+    videoId:'q8i_NuJcOgI',
+    playerVars:{
+      autoplay:0,
+      controls:0,
+      modestbranding:1,
+      playsinline:1,
+      loop:1,
+      playlist:'q8i_NuJcOgI'
+    },
     events:{onReady:()=>player.setVolume(0)}
   });
 }
