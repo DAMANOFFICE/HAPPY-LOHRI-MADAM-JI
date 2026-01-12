@@ -40,16 +40,8 @@ h1{
   text-shadow:0 0 15px rgba(255,200,0,.7);
 }
 
-.names{
-  font-size:1.2rem;
-  color:#fff3b0;
-}
-
-.subtitle{
-  font-size:.9rem;
-  opacity:.9;
-  margin:6px 0;
-}
+.names{font-size:1.2rem;color:#fff3b0}
+.subtitle{font-size:.9rem;opacity:.9;margin:6px 0}
 
 /* BONFIRE */
 .bonfire{
@@ -83,24 +75,24 @@ h1{
 }
 
 @keyframes flicker{
-  0%{transform:translateX(-50%) scale(1)}
   50%{transform:translateX(-50%) scale(1.08)}
-  100%{transform:translateX(-50%) scale(1)}
 }
 
-/* EMBERS */
-.ember{
+/* ❤️ HEART SPARKS */
+.heart{
   position:absolute;
-  bottom:70px;
-  width:5px;
-  height:5px;
-  background:#ffd36a;
-  border-radius:50%;
-  animation:rise 3s infinite;
+  bottom:60px;
+  font-size:14px;
+  color:#ffb3c6;
+  animation:floatHeart 3.5s ease-out forwards;
+  text-shadow:0 0 8px rgba(255,120,160,.8);
 }
 
-@keyframes rise{
-  to{transform:translateY(-180px);opacity:0}
+@keyframes floatHeart{
+  to{
+    transform:translateY(-200px) translateX(var(--x)) scale(1.4);
+    opacity:0;
+  }
 }
 
 /* MESSAGE */
@@ -114,11 +106,7 @@ h1{
 }
 
 /* BUTTONS */
-.controls{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
+.controls{display:flex;flex-direction:column;gap:10px}
 
 button{
   padding:12px;
@@ -127,10 +115,8 @@ button{
   background:linear-gradient(45deg,#ffd36a,#ff9800);
   color:#7a1b00;
   font-size:1rem;
-  font-weight:500;
   box-shadow:0 6px 15px rgba(0,0,0,.3);
 }
-
 button:active{transform:scale(.95)}
 
 /* THROW */
@@ -146,18 +132,38 @@ button:active{transform:scale(.95)}
   to{transform:translate(-50%,-180px) scale(0);opacity:0}
 }
 
-/* FIREWORKS */
-.firework{
-  position:absolute;
-  width:5px;
-  height:5px;
-  background:#ffd36a;
-  border-radius:50%;
-  animation:explode 1s forwards;
+/* 💌 CONFESSION SCREEN */
+.confession{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at center,#ff8fab,#7a001f);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+  z-index:10;
+  opacity:0;
+  pointer-events:none;
+  transition:1s;
 }
 
-@keyframes explode{
-  to{transform:translate(var(--x),var(--y)) scale(0);opacity:0}
+.confession.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.confession h2{
+  font-family:'Pacifico',cursive;
+  font-size:2.4rem;
+  color:#fff3b0;
+  text-shadow:0 0 15px rgba(255,200,200,.8);
+}
+
+.confession p{
+  margin-top:14px;
+  font-size:1.1rem;
+  line-height:1.6;
 }
 </style>
 </head>
@@ -185,16 +191,30 @@ button:active{transform:scale(.95)}
   </div>
 </div>
 
-<!-- INVISIBLE AUDIO PLAYER -->
+<!-- 💌 CONFESSION -->
+<div class="confession" id="confession">
+  <div>
+    <h2>Lipsy ❤️</h2>
+    <p>
+      This Lohri, I don’t wish for anything else.<br>
+      You are my warmth, my smile, my favorite feeling.<br><br>
+      If my heart could speak, it would choose you — always 💖
+    </p>
+  </div>
+</div>
+
 <div id="player"></div>
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
-const fire=document.getElementById("fire");
-const msg=document.getElementById("message");
+const fire = document.getElementById("fire");
+const msg = document.getElementById("message");
+const confession = document.getElementById("confession");
 
-const wishes=[
-    "Every flame dances happier when you’re near ❤️",
+let wishCount = 0;
+
+const wishes = [
+   "Every flame dances happier when you’re near ❤️",
   "You are my favorite winter warmth 🔥",
   "With you, even cold nights feel like poetry ✨",
   "I tossed a wish… and it was always you 💖",
@@ -216,14 +236,17 @@ const wishes=[
   "Every spark carries a promise of us 💫"
 ];
 
-/* EMBERS */
+/* ❤️ HEART SPARKS */
 setInterval(()=>{
-  const e=document.createElement("div");
-  e.className="ember";
-  e.style.left=Math.random()*100+"%";
-  fire.appendChild(e);
-  setTimeout(()=>e.remove(),3000);
-},350);
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤️";
+  h.style.left=Math.random()*100+"%";
+  h.style.fontSize=(12+Math.random()*12)+"px";
+  h.style.setProperty("--x",(Math.random()*60-30)+"px");
+  fire.appendChild(h);
+  setTimeout(()=>h.remove(),3500);
+},450);
 
 /* THROW */
 function throwItem(icon){
@@ -234,37 +257,14 @@ function throwItem(icon){
   setTimeout(()=>t.remove(),1200);
 }
 
-/* FIREWORKS */
-function fireworks(){
-  for(let i=0;i<20;i++){
-    const f=document.createElement("div");
-    f.className="firework";
-    f.style.left=Math.random()*100+"%";
-    f.style.top=Math.random()*35+"%";
-    f.style.setProperty("--x",(Math.random()*160-80)+"px");
-    f.style.setProperty("--y",(Math.random()*160-80)+"px");
-    document.body.appendChild(f);
-    setTimeout(()=>f.remove(),1000);
-  }
-}
-
-/* AUDIO-ONLY YOUTUBE */
-let player,vol=0,started=false;
-
+/* AUDIO */
+let player, started=false;
 function onYouTubeIframeAPIReady(){
-  player=new YT.Player('player',{
-    width:1,
-    height:1,
-    videoId:'q8i_NuJcOgI',
-    playerVars:{
-      autoplay:0,
-      controls:0,
-      modestbranding:1,
-      playsinline:1,
-      loop:1,
-      playlist:'q8i_NuJcOgI'
-    },
-    events:{onReady:()=>player.setVolume(0)}
+  player=new YT.Player("player",{
+    width:1,height:1,
+    videoId:"q8i_NuJcOgI",
+    playerVars:{loop:1,playlist:"q8i_NuJcOgI",playsinline:1},
+    events:{onReady:()=>player.mute()}
   });
 }
 
@@ -272,8 +272,9 @@ function startMusic(){
   if(started) return;
   started=true;
   player.playVideo();
+  let v=0;
   const fade=setInterval(()=>{
-    if(vol<80){vol+=2;player.setVolume(vol);}
+    if(v<80){v+=2;player.setVolume(v);player.unMute();}
     else clearInterval(fade);
   },200);
 }
@@ -290,7 +291,11 @@ function throwWish(){
   throwItem("🍬");
   msg.innerText=wishes[Math.floor(Math.random()*wishes.length)];
   msg.style.opacity=1;
-  fireworks();
+  wishCount++;
+
+  if(wishCount===5){
+    setTimeout(()=>confession.classList.add("show"),1200);
+  }
 }
 </script>
 
