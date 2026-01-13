@@ -132,6 +132,21 @@ button:active{transform:scale(.95)}
   to{transform:translate(-50%,-180px) scale(0);opacity:0}
 }
 
+/* 🎆 FIREWORKS */
+.firework{
+  position:absolute;
+  width:5px;
+  height:5px;
+  background:#ffd36a;
+  border-radius:50%;
+  animation:explode 1s forwards;
+}
+
+@keyframes explode{
+  from{transform:scale(1);opacity:1;}
+  to{transform:translate(var(--x),var(--y)) scale(0);opacity:0;}
+}
+
 /* 💌 CONFESSION SCREEN */
 .confession{
   position:fixed;
@@ -214,26 +229,16 @@ const confession = document.getElementById("confession");
 let wishCount = 0;
 
 const wishes = [
-   "Every flame dances happier when you’re near ❤️",
-  "You are my favorite winter warmth 🔥",
-  "With you, even cold nights feel like poetry ✨",
-  "I tossed a wish… and it was always you 💖",
-  "This Lohri, I thank the fire for bringing you into my life 🌙",
-  "You are sweeter than rewri and warmer than this fire 🍬",
-  "If love had a glow, it would look like you ✨",
-  "Every spark reminds me how you light up my heart 🔥",
-  "Holding you would feel warmer than this bonfire ❤️",
-  "I don’t need wishes anymore, I already have you 💫",
-  "This fire burns worries, but my heart burns only for you 💕",
-  "Even winters feel shy when you smile ❄️❤️",
-  "You make every festival feel like home 🏡",
-  "If I could toss my heart into the fire, it would spell your name 🔥",
-  "Some loves feel safe… you feel like forever ♾️",
-  "This Lohri, I wish for us — today, tomorrow, always 💖",
-  "The fire crackles, but my heart whispers your name ✨",
-  "You are the reason this night feels magical 🌌",
-  "Cold hands, warm hearts, and you beside me ❤️",
-  "Every spark carries a promise of us 💫"
+ "Every flame dances happier when you’re near ❤️",
+ "You are my favorite winter warmth 🔥",
+ "With you, even cold nights feel like poetry ✨",
+ "I tossed a wish… and it was always you 💖",
+ "This Lohri, I thank the fire for bringing you into my life 🌙",
+ "You are sweeter than rewri and warmer than this fire 🍬",
+ "If love had a glow, it would look like you ✨",
+ "Every spark reminds me how you light up my heart 🔥",
+ "Holding you would feel warmer than this bonfire ❤️",
+ "I don’t need wishes anymore, I already have you 💫"
 ];
 
 /* ❤️ HEART SPARKS */
@@ -247,6 +252,20 @@ setInterval(()=>{
   fire.appendChild(h);
   setTimeout(()=>h.remove(),3500);
 },450);
+
+/* 🎆 FIREWORKS */
+function fireworks(){
+  for(let i=0;i<20;i++){
+    const f=document.createElement("div");
+    f.className="firework";
+    f.style.left=Math.random()*100+"%";
+    f.style.top=Math.random()*35+"%";
+    f.style.setProperty("--x",(Math.random()*160-80)+"px");
+    f.style.setProperty("--y",(Math.random()*160-80)+"px");
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),1000);
+  }
+}
 
 /* THROW */
 function throwItem(icon){
@@ -291,6 +310,7 @@ function throwWish(){
   throwItem("🍬");
   msg.innerText=wishes[Math.floor(Math.random()*wishes.length)];
   msg.style.opacity=1;
+  fireworks();          // 🎆 Added here
   wishCount++;
 
   if(wishCount===5){
